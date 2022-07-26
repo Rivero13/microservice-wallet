@@ -2,6 +2,7 @@ package com.bootcamp.ms.microservicewallet.consumer;
 
 import com.bootcamp.ms.commons.entity.Wallet;
 import com.bootcamp.ms.microservicewallet.service.ClientService;
+import com.bootcamp.ms.microservicewallet.service.MaestroService;
 import com.bootcamp.ms.microservicewallet.service.WalletService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,12 +22,17 @@ public class KafkaStringConsumer {
     @Autowired
     private ClientService clientService;
 
+    @Autowired
+    private MaestroService maestroService;
+
     @KafkaListener(topics = "bootcamp-Topic" , groupId = "group_id")
     public void consume(Wallet message) {
         logger.info("Creando monedero...");
+
         clientService.find(message.getIdClient())
                 .flatMap(c -> {
                     message.setClient(c);
+                    message.getClient().setDocumentType(maestroService.getUserForId(1).getDescripcion());
                     message.setDate(new Date());
                     logger.info("Consuming Message {}", message);
                     return walletService.save(message);
