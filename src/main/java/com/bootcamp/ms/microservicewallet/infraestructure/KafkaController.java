@@ -1,7 +1,6 @@
 package com.bootcamp.ms.microservicewallet.infraestructure;
 
 import com.bootcamp.ms.commons.entity.Wallet;
-import com.bootcamp.ms.microservicewallet.consumer.KafkaStringConsumer;
 import com.bootcamp.ms.microservicewallet.producer.KafkaStringProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
